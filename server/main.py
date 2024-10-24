@@ -2,6 +2,8 @@ from fastapi import FastAPI, WebSocket
 from starlette.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 import pyaudio
+import Python_Websocket_Server
+import ffmpeg
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="")
@@ -14,7 +16,8 @@ async def main():
 async def receive_connection(websocket: WebSocket):
     await websocket.accept()
     p = pyaudio.PyAudio()
-    player = p.open(format=pyaudio.paFloat32, channels=1, rate=44100, output=True)
+    player = p.open(format=pyaudio.paInt16, channels=1, rate=16000, output=True)
     while True:
         data = await websocket.receive_bytes()
-        player.write(data)
+        output = Python_Websocket_Server.decode_audio(data)
+        player.write(output)
