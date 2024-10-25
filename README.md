@@ -2,8 +2,6 @@
 
 Smart Push-to-Talk (PTT) Web Application for Real-Time Class Discussions using Websockets.
 
-
-
 ### Project Architecture
 
 ```
@@ -21,9 +19,11 @@ Smart Push-to-Talk (PTT) Web Application for Real-Time Class Discussions using W
          +----------------------+
 ```
 
+### Installation
 
+For initial setup, do `pip install -r requirements.txt`
 
-References:
+### References
 
 [The Websocket Protocol - RFC 6455](https://datatracker.ietf.org/doc/html/rfc6455#section-1.1)
 
