@@ -3,15 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Push-to-Talk WebSocket Client</title>
+    <title>Audio Streaming Client</title>
+    <!-- Load RecordRTC which includes MediaStreamRecorder -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/RecordRTC/5.6.2/RecordRTC.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #recordButton {
+            padding: 1.5rem 3rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #recordButton:active {
+            background-color: #dc3545;
+            transform: scale(0.98);
+        }
+
+        #status {
+            margin-top: 1rem;
+            color: #666;
+        }
+
+        .recording {
+            background-color: #dc3545 !important;
+        }
+    </style>
 </head>
 <body>
-
-    <h1>Push-to-Talk</h1>
-    <button id="pushToTalkButton">Hold to Speak</button>
-
-    <!-- Link to the JavaScript file -->
+    <div class="container">
+        <h1>Push To Talk</h1>
+        <button id="recordButton">Hold to Speak</button>
+        <div id="status">Ready</div>
+    </div>
+    
     <script src="static/JSWebsocketClient.js"></script>
-
 </body>
 </html>
