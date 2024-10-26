@@ -3,7 +3,6 @@ from starlette.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 import pyaudio
 import Python_Websocket_Server
-import ffmpeg
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="")
