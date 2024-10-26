@@ -7,7 +7,9 @@ const recordButton = document.getElementById('recordButton');
 
 // Initialize WebSocket connection
 function initWebSocket() {
-    websocket = new WebSocket('ws://localhost:8000/mic');
+    const name = window.location.pathname.split('/').pop();
+
+    websocket = new WebSocket('ws://localhost:8000/mic/' + name);
     
     websocket.onopen = () => {
         statusDiv.textContent = 'Connected to server';
