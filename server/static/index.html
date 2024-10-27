@@ -3,18 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/style.css">
-    <title>NUS | Home</title>
+    <title>NUS Push To Talk</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Hello, welcome to NUS Push To Talk</h1>
-        <h2>Please enter your name below:</h2>
-        <input type="text" id="name" placeholder="John Doe">
-        <br><br>
-        <button id="submit">Submit</button>
+    <div class="welcome-container">
+        <div class="logo-section">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" width="48" height="48">
+                    <path fill="currentColor" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                    <path fill="currentColor" d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                </svg>
+            </div>
+            <h1>Welcome to NUS Push To Talk</h1>
+            <p class="subtitle">Connect and communicate in real-time</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="input-group">
+                <label for="name">Enter your name</label>
+                <input type="text" id="name" placeholder="Your name" maxlength="30" autocomplete="off">
+                <small class="input-hint">This will be your display name in the chat</small>
+            </div>
+            
+            <button id="submit" class="pulse-button">
+                <span class="button-text">Join</span>
+            </button>
+        </div>
+
+        <div class="features">
+            <div class="feature-item">
+                <div class="feature-icon">🎙️</div>
+                <h3>Push to Talk</h3>
+                <p>Hold to speak, release to stop</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📊</div>
+                <h3>Live Streaming</h3>
+                <p>Real-time voice communication</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🔊</div>
+                <h3>Clear Audio</h3>
+                <p>High-quality voice transmission</p>
+            </div>
+        </div>
     </div>
-    
-    <script src="static/handleName.js"></script>
+
+    <script src="/static/handleName.js"></script>
 </body>
 </html>

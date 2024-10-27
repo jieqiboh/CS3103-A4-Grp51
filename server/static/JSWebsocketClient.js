@@ -5,6 +5,28 @@ let websocket = null;
 const statusDiv = document.getElementById('status');
 const recordButton = document.getElementById('recordButton');
 
+function setupAvatar() {
+    const name = decodeURIComponent(window.location.pathname.split('/').pop());
+    const avatarText = document.querySelector('.avatar-text');
+    if (avatarText) {
+        avatarText.setAttribute('data-letter', name.charAt(0).toUpperCase());
+    }
+}
+
+// Update status badge styles
+function updateStatus(message, type) {
+    const statusBadge = document.getElementById('status');
+    statusBadge.textContent = message;
+    
+    // Remove all status classes
+    statusBadge.classList.remove('connected', 'recording');
+    
+    // Add appropriate class
+    if (type) {
+        statusBadge.classList.add(type);
+    }
+}
+
 // Initialize WebSocket connection
 function initWebSocket() {
     const name = window.location.pathname.split('/').pop();
@@ -12,18 +34,18 @@ function initWebSocket() {
     websocket = new WebSocket('ws://localhost:8000/mic/' + name);
     
     websocket.onopen = () => {
-        statusDiv.textContent = 'Connected to server';
+        updateStatus('Connected', 'connected');
         recordButton.disabled = false;
     };
     
     websocket.onclose = () => {
-        statusDiv.textContent = 'Disconnected from server';
+        updateStatus('Disconnected');
         recordButton.disabled = true;
     };
     
     websocket.onerror = (error) => {
         console.error('WebSocket Error:', error);
-        statusDiv.textContent = 'Connection error';
+        updateStatus('Connection error');
     };
 }
 
@@ -78,6 +100,7 @@ function stopRecording() {
 
 // Initialize everything when page loads
 window.onload = async () => {
+    setupAvatar();
     await initRecorder();
     initWebSocket();
 
