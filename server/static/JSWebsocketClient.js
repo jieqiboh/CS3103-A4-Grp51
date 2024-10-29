@@ -31,7 +31,7 @@ function updateStatus(message, type) {
 function initWebSocket() {
     const name = window.location.pathname.split('/').pop();
 
-    websocket = new WebSocket('ws://localhost:8000/mic/' + name);
+    websocket = new WebSocket('ws://localhost:80/mic/' + name);
     
     websocket.onopen = () => {
         updateStatus('Connected', 'connected');
