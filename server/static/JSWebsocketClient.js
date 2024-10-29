@@ -4,12 +4,29 @@
 let audioContext;
 let socket = new WebSocket("ws://localhost:8000/mic");
 
-// Capture microphone input
-navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-    let mediaRecorder = new MediaRecorder(stream);
-    mediaRecorder.ondataavailable = (event) => {
-        console.log('Audio data type:', event.data.type);  // Likely "audio/webm" or "audio/ogg"
-        socket.send(event.data);  // Send the audio data to the server
+// Update status badge styles
+function updateStatus(message, type) {
+    const statusBadge = document.getElementById('status');
+    statusBadge.textContent = message;
+    
+    // Remove all status classes
+    statusBadge.classList.remove('connected', 'recording');
+    
+    // Add appropriate class
+    if (type) {
+        statusBadge.classList.add(type);
+    }
+}
+
+// Initialize WebSocket connection
+function initWebSocket() {
+    const name = window.location.pathname.split('/').pop();
+
+    websocket = new WebSocket('ws://192.168.1.9/mic/' + name);
+    
+    websocket.onopen = () => {
+        updateStatus('Connected', 'connected');
+        recordButton.disabled = false;
     };
     
     // Start recording when button is pressed
