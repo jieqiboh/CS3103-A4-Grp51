@@ -1,9 +1,11 @@
 // Initialize variables
-let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-let mediaRecorder = null;
+let audioContext = null;
+let mediaStreamSource = null;
+let scriptProcessor = null;
 let websocket = null;
 const statusDiv = document.getElementById('status');
 const recordButton = document.getElementById('recordButton');
+let isProcessing = false;
 
 function setupAvatar() {
     const name = decodeURIComponent(window.location.pathname.split('/').pop());
@@ -30,7 +32,6 @@ function updateStatus(message, type) {
 // Initialize WebSocket connection
 function initWebSocket() {
     const name = window.location.pathname.split('/').pop();
-
     websocket = new WebSocket('ws://localhost:80/mic/' + name);
     
     websocket.onopen = () => {
@@ -49,59 +50,71 @@ function initWebSocket() {
     };
 }
 
-// Initialize MediaStream and MediaRecorder
-async function initRecorder() {
+// Initialize Audio Context and Script Processor
+async function initAudioProcessor() {
     try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
+        const stream = await navigator.mediaDevices.getUserMedia({
             audio: {
                 channelCount: 1,
                 sampleRate: 16000,
-                sampleSize: 16,
                 echoCancellation: true,
-                noiseSuppression: true,
-                autoGainControl: true
+                noiseSuppression: true
             }
         });
 
-        // Initialize MediaRecorder for the audio stream
-        mediaRecorder = new MediaRecorder(mediaStream);
-        mediaRecorder.mimeType = 'audio/wav';
+        audioContext = new AudioContext({ sampleRate: 16000 });
+        mediaStreamSource = audioContext.createMediaStreamSource(stream);
         
-        mediaRecorder.ondataavailable = (event) => {
-            if (websocket && websocket.readyState === WebSocket.OPEN) {
-                websocket.send(event.data);
+        scriptProcessor = audioContext.createScriptProcessor(4096, 1, 1);
+
+        mediaStreamSource.connect(scriptProcessor);
+        scriptProcessor.connect(audioContext.destination);
+
+        scriptProcessor.onaudioprocess = (event) => {
+            if (!isProcessing || !websocket || websocket.readyState !== WebSocket.OPEN) return;
+
+            const inputBuffer = event.inputBuffer;
+            const rawData = inputBuffer.getChannelData(0);
+
+            const pcmData = new Int16Array(rawData.length);
+            for (let i = 0; i < rawData.length; i++) {
+                pcmData[i] = Math.max(-1, Math.min(1, rawData[i])) * 0x7FFF;
             }
+
+            websocket.send(pcmData.buffer);
         };
 
-        statusDiv.textContent = 'Microphone ready';
+        updateStatus('Microphone ready', 'connected');
     } catch (err) {
         console.error('Error accessing microphone:', err);
-        statusDiv.textContent = 'Error accessing microphone';
+        updateStatus('Error accessing microphone');
     }
 }
 
 // Start recording
 function startRecording() {
-    if (!mediaRecorder) return;
-
-    mediaRecorder.start();  // Start the MediaRecorder
+    if (!audioContext || audioContext.state === 'closed') return;
+    
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+    
+    isProcessing = true;
     recordButton.classList.add('recording');
-    statusDiv.textContent = 'Recording...';
+    updateStatus('Recording...', 'recording');
 }
 
 // Stop recording
 function stopRecording() {
-    if (!mediaRecorder) return;
-
-    mediaRecorder.stop();  // Stop the MediaRecorder
+    isProcessing = false;
     recordButton.classList.remove('recording');
-    statusDiv.textContent = 'Stopped';
+    updateStatus('Connected', 'connected');
 }
 
 // Initialize everything when page loads
 window.onload = async () => {
     setupAvatar();
-    await initRecorder();
+    await initAudioProcessor();
     initWebSocket();
 
     // Event listeners for recording control
@@ -122,10 +135,21 @@ window.onload = async () => {
 
 // Clean up when page is closed
 window.onbeforeunload = () => {
+    isProcessing = false;
+    
     if (websocket) {
         websocket.close();
     }
-    if (mediaRecorder && mediaRecorder.state !== "inactive") {
-        mediaRecorder.stop();
+    
+    if (scriptProcessor) {
+        scriptProcessor.disconnect();
+    }
+    
+    if (mediaStreamSource) {
+        mediaStreamSource.disconnect();
+    }
+    
+    if (audioContext) {
+        audioContext.close();
     }
 };
