@@ -18,6 +18,10 @@ async def main():
 async def chat(name: str):
     return FileResponse('static/JSWebsocketClient.html')
 
+@app.get("/admin")
+async def admin():
+    return FileResponse('static/admin.html')
+
 @app.get("/api/connections")
 async def get_connections():
     return {
