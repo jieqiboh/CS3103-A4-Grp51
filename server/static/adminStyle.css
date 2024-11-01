@@ -1,0 +1,129 @@
+body {
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: #2d3748;
+    line-height: 1.5;
+}
+
+.dashboard-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.stats-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.stats-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #4299e1;
+    margin: 0.5rem 0;
+}
+
+.stats-label {
+    color: #718096;
+    font-size: 0.875rem;
+}
+
+.connections-table {
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.connections-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.connections-table th {
+    background: #f7fafc;
+    text-align: left;
+    padding: 1rem;
+    font-weight: 600;
+    color: #4a5568;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.connections-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.connections-table tr:last-child td {
+    border-bottom: none;
+}
+
+.refresh-button {
+    background: #4299e1;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.refresh-button:hover {
+    background: #3182ce;
+}
+
+.refresh-button svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.refresh-button.loading svg {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.no-connections {
+    text-align: center;
+    padding: 2rem;
+    color: #718096;
+}
+
+.last-updated {
+    color: #718096;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 640px) {
+    .connections-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+}
