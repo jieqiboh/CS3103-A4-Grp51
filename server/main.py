@@ -49,14 +49,15 @@ async def receive_connection(websocket: WebSocket, name: str):
         while True:
             data = await websocket.receive_bytes()
             try:
-                data.decode()
-                current_speaker[0] = None
+                done = data.decode()
+                if done == "Done":
+                    current_speaker[0] = None
             except:
                 if not current_speaker[0]:
                     current_speaker[0] = name
                 if current_speaker[0] == name:
                     print(name)
-                    player.write(data)
+                    player.write(data)     
     finally:
         if name in active_connections:
             del active_connections[name]
