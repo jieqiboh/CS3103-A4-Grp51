@@ -1,8 +1,19 @@
-// JS Websocket Client Sample
-// Author: Bhojan Anand, NUS SoC
+// Initialize variables
+let audioContext = null;
+let mediaStreamSource = null;
+let scriptProcessor = null;
+let websocket = null;
+const statusDiv = document.getElementById('status');
+const recordButton = document.getElementById('recordButton');
+let isProcessing = false;
 
-let audioContext;
-let socket = new WebSocket("ws://localhost:8000/mic");
+function setupAvatar() {
+    const name = decodeURIComponent(window.location.pathname.split('/').pop());
+    const avatarText = document.querySelector('.avatar-text');
+    if (avatarText) {
+        avatarText.setAttribute('data-letter', name.charAt(0).toUpperCase());
+    }
+}
 
 // Update status badge styles
 function updateStatus(message, type) {
@@ -21,7 +32,7 @@ function updateStatus(message, type) {
 // Initialize WebSocket connection
 function initWebSocket() {
     const name = window.location.pathname.split('/').pop();
-    websocket = new WebSocket('ws://192.168.43.75/mic/' + name);
+    websocket = new WebSocket('ws://192.168.43.75:80/mic/' + name);
     
     websocket.onopen = () => {
         updateStatus('Connected', 'connected');
@@ -117,10 +128,29 @@ window.onload = async () => {
         e.preventDefault();
         startRecording();
     });
-
-    // Stop recording when button is released
-    document.getElementById('pushToTalkButton').addEventListener('mouseup', () => {
-        console.log("Recording stopped");
-        mediaRecorder.stop();
+    recordButton.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        stopRecording();
     });
+};
+
+// Clean up when page is closed
+window.onbeforeunload = () => {
+    isProcessing = false;
+    
+    if (websocket) {
+        websocket.close();
+    }
+    
+    if (scriptProcessor) {
+        scriptProcessor.disconnect();
+    }
+    
+    if (mediaStreamSource) {
+        mediaStreamSource.disconnect();
+    }
+    
+    if (audioContext) {
+        audioContext.close();
+    }
 };
