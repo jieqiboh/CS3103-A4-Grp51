@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/adminStyle.css">
+    <title>NUS Push To Talk Server Management</title>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>Connections</h1>
+            <button id="refreshButton" class="refresh-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 4v6h-6"></path>
+                    <path d="M1 20v-6h6"></path>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
+                    <path d="M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                Refresh
+            </button>
+        </div>
+
+        <div class="stats-card">
+            <div class="stats-label">Active Connections</div>
+            <div id="totalConnections" class="stats-number">0</div>
+            <div id="lastUpdated" class="last-updated"></div>
+        </div>
+
+        <div class="connections-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Connected At</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody id="connectionsTable">
+                    <tr>
+                        <td colspan="3" class="no-connections">No active connections</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/static/handleConnections.js"></script>
+</body>
+</html>
