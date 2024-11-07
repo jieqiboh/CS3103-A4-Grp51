@@ -35,11 +35,11 @@ Running the server:
   
 2. Go to chrome://flags/
    
-4. Look for "Insecure origins treated as secure" and enable it
+3. Look for "Insecure origins treated as secure" and enable it
    
-5. Add the ip address of the computer to the box and relaunch chrome. The reason for this is that our server does not use any certificate (i.e starts with http instead of https). Because of this, google chrome does not allow microphone to be enabled for unsecure webpage. This is to make google chrome “recognise” our webpage as secure.
+4. Add the ip address of the computer to the box and relaunch chrome. The reason for this is that our server does not use any certificate (i.e starts with http instead of https). Because of this, google chrome does not allow microphone to be enabled for unsecure webpage. This is to make google chrome “recognise” our webpage as secure.
    
-6. Locate the file JSWebsocketClient.js. The folder path is server > static. Go to line 35, which have this line of code:
+5. Locate the file JSWebsocketClient.js. The folder path is server > static. Go to line 35, which have this line of code:
 
 ```
 websocket = new WebSocket('ws://192.168.43.75:80/mic/' + name); 
@@ -47,7 +47,7 @@ websocket = new WebSocket('ws://192.168.43.75:80/mic/' + name);
 
 Note that 192.168.43.75 is only for our side. It could be different IP address
 
-7. Modify 192.168.43.75 to be the ip address of the computer
+6. Modify 192.168.43.75 to be the ip address of the computer
 
 E.g
 If my IP address is 192.158.41.2, it’ll be
@@ -56,12 +56,12 @@ If my IP address is 192.158.41.2, it’ll be
  websocket = new WebSocket('ws://192.158.41.2:80/mic/' + name); 
 ```
 
-8. Go to the folder containing the main.py file. This file should be in the server folder. Ensure the terminal’s path is this folder. 
+7. Go to the folder containing the main.py file. This file should be in the server folder. Ensure the terminal’s path is this folder. 
 
 E.g
 <.../CS3103-A4-Grp51/server> 
 
-9. Type into the terminal this command
+8. Type into the terminal this command
     
 ```
 uvicorn main:app --host (IP of computer) --port 80
@@ -73,7 +73,7 @@ For e.g, if my IP address is 192.158.41.2, the command is
  uvicorn main:app --host 192.158.41.2 --port 80
 ```
 
-10. You should be able to see this (note that the weblink will be different. It only appears as 0.0.0.0 on my device) at the bottom. Click on the link to access the webpage
+9. You should be able to see this (note that the weblink will be different. It only appears as 0.0.0.0 on my device) at the bottom. Click on the link to access the webpage
 ```
 |--------------------------------------------------------------------------| 
 |                         ...                                              |
