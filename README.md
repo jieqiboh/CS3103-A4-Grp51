@@ -37,7 +37,7 @@ Running the server:
    
 4. Look for "Insecure origins treated as secure" and enable it
    
-5. Add the ip address of the computer to the box and relaunch chrome. The reason for this is that our server does not use any certificate (i.e starts with http instead of https). Because of this, google chrome does not allow microphone to be enabled for unsecure webpage. This is to make google chrome “recognise” our webpage as secure
+5. Add the ip address of the computer to the box and relaunch chrome. The reason for this is that our server does not use any certificate (i.e starts with http instead of https). Because of this, google chrome does not allow microphone to be enabled for unsecure webpage. This is to make google chrome “recognise” our webpage as secure.
    
 6. Locate the file JSWebsocketClient.js. The folder path is server > static. Go to line 35, which have this line of code:
 
