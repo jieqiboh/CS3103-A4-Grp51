@@ -1,6 +1,7 @@
 from fastapi import FastAPI, WebSocket
 from starlette.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from collections import deque
 import pyaudio
 from typing import Dict
 from datetime import datetime
@@ -9,6 +10,7 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="")
 
 active_connections: Dict[str, dict] = {}
+current_speaker = [None]
 
 @app.get("/")
 async def main():
@@ -41,13 +43,21 @@ async def receive_connection(websocket: WebSocket, name: str):
     await websocket.accept()
     active_connections[name] = {"websocket": websocket, "connected_at": datetime.now()}
     print(f"User {name} connected")
-    
     try:
         p = pyaudio.PyAudio()
         player = p.open(format=pyaudio.paInt16, channels=1, rate=16000, output=True)
         while True:
             data = await websocket.receive_bytes()
-            player.write(data)
+            try:
+                done = data.decode()
+                if done == "Done":
+                    current_speaker[0] = None
+            except:
+                if not current_speaker[0]:
+                    current_speaker[0] = name
+                if current_speaker[0] == name:
+                    print(name)
+                    player.write(data)     
     finally:
         if name in active_connections:
             del active_connections[name]

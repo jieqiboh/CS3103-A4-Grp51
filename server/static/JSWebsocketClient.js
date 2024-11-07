@@ -32,7 +32,7 @@ function updateStatus(message, type) {
 // Initialize WebSocket connection
 function initWebSocket() {
     const name = window.location.pathname.split('/').pop();
-    websocket = new WebSocket('ws://localhost:80/mic/' + name);
+    websocket = new WebSocket('ws://192.168.43.75:80/mic/' + name);
     
     websocket.onopen = () => {
         updateStatus('Connected', 'connected');
@@ -108,6 +108,7 @@ function startRecording() {
 function stopRecording() {
     isProcessing = false;
     recordButton.classList.remove('recording');
+    websocket.send((new TextEncoder()).encode("Done"));
     updateStatus('Connected', 'connected');
 }
 
