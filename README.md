@@ -41,7 +41,9 @@ Running the server:
    
 6. Locate the file JSWebsocketClient.js. The folder path is server > static. Go to line 35, which have this line of code:
 
----------> websocket = new WebSocket('ws://192.168.43.75:80/mic/' + name); <------------
+```
+websocket = new WebSocket('ws://192.168.43.75:80/mic/' + name); 
+```
 
 Note that 192.168.43.75 is only for our side. It could be different IP address
 
@@ -50,7 +52,9 @@ Note that 192.168.43.75 is only for our side. It could be different IP address
 E.g
 If my IP address is 192.158.41.2, it’ll be
 
----------> websocket = new WebSocket('ws://192.158.41.2:80/mic/' + name); <------------
+```
+ websocket = new WebSocket('ws://192.158.41.2:80/mic/' + name); 
+```
 
 8. Go to the folder containing the main.py file. This file should be in the server folder. Ensure the terminal’s path is this folder. 
 
@@ -58,15 +62,19 @@ E.g
 <.../CS3103-A4-Grp51/server> 
 
 9. Type into the terminal this command
-
----------> uvicorn main:app --host (IP of computer) --port 80 <------------
+    
+```
+uvicorn main:app --host (IP of computer) --port 80
+```
 
 For e.g, if my IP address is 192.158.41.2, the command is
 
----------> uvicorn main:app --host 192.158.41.2 --port 80 <------------
+```
+ uvicorn main:app --host 192.158.41.2 --port 80
+```
 
 You should be able to see this (note that the weblink will be different. It only appears as 0.0.0.0 on my device) at the bottom. Click on the link to access the webpage
-
+```
 |--------------------------------------------------------------------------| 
 |                         ...                                              |
 |INFO:     Started server process [22084]                                  |
@@ -74,6 +82,7 @@ You should be able to see this (note that the weblink will be different. It only
 |INFO:     Application startup complete.                                   |
 |INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)   |
 |--------------------------------------------------------------------------|
+```
 
 ### References
 
