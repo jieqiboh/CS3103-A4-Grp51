@@ -73,7 +73,7 @@ For e.g, if my IP address is 192.158.41.2, the command is
  uvicorn main:app --host 192.158.41.2 --port 80
 ```
 
-You should be able to see this (note that the weblink will be different. It only appears as 0.0.0.0 on my device) at the bottom. Click on the link to access the webpage
+10. You should be able to see this (note that the weblink will be different. It only appears as 0.0.0.0 on my device) at the bottom. Click on the link to access the webpage
 ```
 |--------------------------------------------------------------------------| 
 |                         ...                                              |
